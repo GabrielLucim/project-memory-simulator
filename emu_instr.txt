@@ -1,0 +1,37 @@
+MEMORY HIERARCHY INSTRUCTIONS
+
+Compile the code: 
+	g++ main.cpp Processador.cpp Cache.cpp MemPrincipal.cpp -o mem_emulator -std=c++17
+
+---
+
+Configure in the code:
+
+	(Main.cpp)
+	
+	// Line Size
+	uint16_t tamLinha = 64;
+	
+	// Main Memory
+	hierarquia.push_back(std::make_unique<MemPrincipal>("RAM", 200));
+
+        // Cache L* Example
+        hierarquia.push_back(std::make_unique<Cache>("L*", 16, hierarquia.back().get(),
+                                                     512, 4, tamLinha, PoliticaEscrita::WRITE_BACK)); 
+						     // Name, Latency, Next Level, Size (KB), Associativity, Line Size (BYTE), Policy
+	
+	// Processor
+	PadraoAcesso padrao = PadraoAcesso::ALEATORIO; // Access Standard
+        uint32_t tamanho_buffer = 1024000; // Buffer
+        uint32_t quantidade_acessos = 10000000; // Number of Accesses
+        int stride = 32; // Stride
+
+	(Processor.cpp)
+
+	// Writing Rate
+	if (rng() % 10 < 6) {
+
+---
+
+Execute the simulator:
+	./mem_emulator
